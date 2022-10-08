@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NFT market place</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"
+        integrity="sha512-oMd9Re3VgJcXuZJn9DN6X7S7JUc7xLYZ2UyZ85Mm/xzaW3lwBr4fV2zjuu/n5jY/Of/2JOx35CTa6zvQNxb31Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        nav {
+            width: 100px;
+            height: 100vh;
+            margin-left: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 270px;
+        }
+
+        main {
+            margin-left: 270px;
+            width: auto;
+        }
+
+        body {
+            padding: 0;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        .nav-class-items a {
+            width: 100%;
+            display: block;
+            /* text-align: center; */
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 7px 20px;
+            /* margin: 5px 0; */
+            cursor: pointer;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-class-items a.active-tab {
+            border-bottom: 2px solid #fff;
+            /* border-left: 2px solid #fff; */
+            font-size: 1.7rem;
+        }
+
+        .headline {
+            border-bottom: 2px solid #000;
+        }
+
+        .account-address {
+            font-weight: 600;
+            font-size: 0.7rem;
+            border-bottom: 3px solid #000;
+            /* box-shadow: 0 0 15px #fff; */
+            /* border-radius: 5px; */
+        }
+
+        .card-img-top {
+            background: black;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-img-top img {
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            /* z-index: 1; */
+        }
+    </style>
+</head>
+
+<body class="container-fluid p-0">
+
+    <nav class="bg-primary text-light position-fixed ">
+        <div class="py-4 px-2 h-100">
+            <div class="account-address py-1" id="active-account-block">
+                <h5>Active Account</h5>
+                <p id="account-address" class="overflow-auto">null</p>
+            </div>
+            <div class="d-flex h-100 align-items-center">
+                <div class="h-50 w-100 nav-class-items">
+                    <a class="active-tab" id="home" onclick="displayAllNFT()">Home</a>
+                    <a onclick="displayMyNFT()" id="my-nft-btn">My NFT <span class="badge bg-secondary"
+                            id="number-nft">3</span></a>
+                    <a href="/Register">Create NFT</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <main class="">
+        <div class="mx-4 px-1 py-3 row headline">
+            <h1 class="col-9 pt-1" id="tab-title">
+                Market place
+            </h1>
+            <div class="col-3 py-3">
+                <button class="btn btn-primary" id="connect" onclick="connectBtnClick()">Connect to Metamask</button>
+            </div>
+        </div>
+        <div class="px-5 mt-2 row" id="all-nft-list">
+            <div class="col-4 px-3 my-4">
+                <div class="card">
+                    <div class="card-img-top">
+                        <img src="./WallPapers/pmr48zw9xsx01.jpg" class="" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's
+                            content.</p>
+                        <span class="fw-bold">Go somewhere</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-3 my-4">
+                <div class="card">
+                    <div class="card-img-top">
+                        <img src="./WallPapers/p3.jpg" class="" alt="...">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
+                            the card's
+                            content.</p>
+                        <span class="fw-bold">Go somewhere</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="px-5 mt-2 row" id="NFT-list" style="display:none;">
+
+        </div>
+    </main>
+
+</body>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+<script src="web3Methods.js"></script>
+<script src="application.js"></script>
+<script>
+
+    function displayMyNFT() {
+        document.querySelector("#all-nft-list").style.display = 'none';
+        document.querySelector("#NFT-list").style.display = 'flex';
+        document.querySelector("#tab-title").innerHTML = "My NFT Collection";
+        document.querySelector("#home").classList.remove("active-tab");
+        document.querySelector("#my-nft-btn").classList.add("active-tab");
+    }
+
+    function displayAllNFT() {
+        document.querySelector("#all-nft-list").style.display = 'flex';
+        document.querySelector("#NFT-list").style.display = 'none';
+        document.querySelector("#tab-title").innerHTML = "Market Place";
+
+        document.querySelector("#home").classList.add("active-tab");
+        document.querySelector("#my-nft-btn").classList.remove("active-tab");
+    }
+</script>
+
+</html>
