@@ -63,7 +63,7 @@ App = {
         // const nft_demo1 = await $.getJSON('MyNFT.json')
         // console.log("Using Ajex");
         // console.log(nft_demo1);
-        const response = await fetch('MyNFT.json')
+        const response = await fetch('/MyNFT.json')
         const nft_demo = await response.json()
         console.log("Using fetch");
         console.log(nft_demo);
@@ -82,12 +82,20 @@ App = {
             let NFT_list = document.querySelector("#NFT-list");
             NFT_list.innerHTML = "";
             // tmp--;
-            while (tmp > 0) {
-                let uri = "https://ipfs.filebase.io/ipfs/" + await App.NFT_demo.methods.getTokenURIAddress(tmp).call()
-                // console.log("Token URI");
-                // console.log(uri);
-                render_NFT(tmp, uri, App.account, NFT_list);
-                tmp--;
+            let counter = 0;
+            let k = 1;
+            while (tmp > counter) {
+                let tmpData = await App.get_detail(k);
+                console.log(App.account);
+                console.log(tmpData.owner);
+                if (tmpData.owner == App.account) {
+                    let uri = "https://ipfs.filebase.io/ipfs/" + await App.NFT_demo.methods.getTokenURIAddress(k).call()
+                    counter++;
+                    // console.log("Token URI");
+                    // console.log(uri);
+                    render_NFT(k, uri, App.account, NFT_list);
+                }
+                k++;
             }
         }
     },
@@ -134,6 +142,16 @@ App = {
             connectMetaMask();
         }
         return null;
+    },
+    get_detail: async (id) => {
+        let detail = await App.NFT_demo.methods.getTokenURIAddress(id).call();
+        console.log(detail);
+        let prefix = "https://ipfs.filebase.io/ipfs/" + detail;
+        let owner = await App.NFT_demo.methods.ownerOf(id).call();
+        return {
+            "url": prefix,
+            "owner": owner,
+        };
     },
     try: async () => {
         let data = await App.NFT_demo.methods.baseTokenURI().call();
@@ -183,7 +201,7 @@ async function render_NFT(tokenId, uri, address, list) {
     //     </div>
     // `;
     list.innerHTML += `
-        <div class="col-4 px-3 my-4">
+        <a href="http://localhost:5000/detail/${tokenId}" class="link-box col-4 px-3 my-4">
                 <div class="card">
                     <div class="card-img-top">
                         <img src="${data.Item_URL}" class="" alt="...">
@@ -194,7 +212,7 @@ async function render_NFT(tokenId, uri, address, list) {
                         <span class="fw-bold"> ${address}</span>
                     </div>
                 </div>
-        </div>
+        </a>
     `;
 }
 async function connectBtnClick() {

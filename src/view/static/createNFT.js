@@ -3,9 +3,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     if (App.web3Provider == undefined) {
         await App.load();
     }
-    let loading_spinner = document.querySelector("#loading_spinner");
-    let loading_text = document.querySelector("#loading_text");
-    let submit_text = document.querySelector("#submit_text");
 
     let nft_title = document.querySelector("#nft_title");
     let account_address = document.querySelector("#account_address");
@@ -20,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let formData = new FormData();
         formData.append("nft_file", resource.files[0]);
         formData.append("discription", nft_description.value);
-        formData.append("title", nft_title);
+        formData.append("title", nft_title.value);
         const response = await fetch('/', {
             method: "POST",
             body: formData
@@ -28,17 +25,27 @@ document.addEventListener("DOMContentLoaded", async function () {
         const data = await response.json();
         const result = await App.create_nft(data.ci);
         if (result != null) {
-            // window.history.pushState("http://localhost:5000/register")
-            window.location.replace("http://localhost:5000/");
-            window.location.reload();
+            // history.pushState({}, "", "http://localhost:5000/register");
+            location.replace("http://localhost:5000/");
+            // location.reload();
         }
     }
 
     document.querySelector("#create_nft_form").addEventListener("submit", function (event) {
 
-        submit_text.style.display = "none";
-        loading_spinner.style.display = "inline-block";
-        loading_text.style.display = "inline-block";
+
+        let loading_spinner = document.querySelector("#loading_spinner");
+        let loading_text = document.querySelector("#loading_text");
+        let submit_text = document.querySelector("#submit_text");
+
+        try {
+            submit_text.style.display = "none";
+            loading_spinner.style.display = "inline-block";
+            loading_text.style.display = "inline-block";
+        } catch (error) {
+            console.log("Error in disableing Btn ");
+            console.log(error);
+        }
 
         document.querySelector("#submitBtn").disabled = true;
         document.querySelector("#resetBtn").disabled = true;

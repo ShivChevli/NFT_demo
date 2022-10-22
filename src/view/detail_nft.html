@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Page</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .popup-container {
+            /* position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); */
+            width: calc(100%);
+            height: 100vh;
+            /* background: rgba(0, 0, 0, .8); */
+            /* border-radius: 10px; */
+            border: 1px solid #000;
+            display: grid;
+            /* display: none; */
+            grid-template-columns: 60% 40%;
+            grid-template-areas: repeat();
+        }
+
+        .popup-img-top {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .popup-img-top img {
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: #000;
+            /* z-index: 1; */
+        }
+
+        .popup-detail-container {
+            padding: 50px 10px;
+            /* color: #fff; */
+        }
+
+        .popup-detail-card-container {
+            margin: 30px 20px 10px;
+        }
+
+        .popup-detail-card-container h1 {
+            margin-bottom: 10px;
+        }
+
+        .popup-detail-card-container p {
+            font-size: 1.2rem;
+        }
+
+        .btn-primary {
+            color: #000;
+            text-decoration: none;
+            display: block;
+            margin-top: 100px;
+            border-radius: 10px;
+            width: 100%;
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            border: 1px solid #000;
+            border-radius: 5px;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="popup-container">
+        <div class="popup-img-top">
+            <img src="./WallPapers/p3.jpg" id="nft-img" class="" alt="...">
+        </div>
+        <div class="popup-detail-container">
+            <div class="popup-detail-card-container">
+                <h3>Name : </h3>
+                <p id="name"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi non quisquam praesentium
+                    provident dolores, at delectus sint maxime nemo, amet exercitationem dignissimos, ab doloribus qui
+                    deleniti aperiam itaque voluptates ullam?</p>
+            </div>
+            <div class="popup-detail-card-container">
+                <h3>NFT ID : <span id="id"> 2</span> </h3>
+                <!-- <p id="id">2</p> -->
+            </div>
+            <div class="popup-detail-card-container">
+                <h3>Owner : </h3>
+                <p id="owner"> </p>
+            </div>
+            <div class="popup-detail-card-container">
+                <h3>Description : </h3>
+                <p id="desc"> Lorem ipsum dolor sit amet ?</p>
+            </div>
+            <a href="http://localhost:5000/" class="btn-primary ">
+                Back
+            </a>
+        </div>
+    </div>
+</body>
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"
+    integrity="sha512-oMd9Re3VgJcXuZJn9DN6X7S7JUc7xLYZ2UyZ85Mm/xzaW3lwBr4fV2zjuu/n5jY/Of/2JOx35CTa6zvQNxb31Q=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="/web3Methods.js"></script>
+<!-- <script src="/loadData.js"></script> -->
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+
+        if (App.web3Provider == undefined) {
+            console.log("loading Web3 ");
+            await App.load();
+        }
+
+        console.log(location.href);
+        let url = location.href;
+        console.log(url.split('/'));
+        let tmp = url.split('/');
+        let id = tmp[tmp.length - 1];
+        console.log(id);
+        let data = await get_nft_detail_popup(id);
+        console.log("data");
+        console.log(data);
+
+        document.querySelector("#nft-img").src = data.Item_URL;
+        if (data.title == "[object HTMLInputElement]") {
+            console.log("No title found");
+            document.querySelector("#name").innerHTML = "NFT " + id;
+        }
+        else {
+            document.querySelector("#name").innerHTML = data.title;
+        }
+        document.querySelector("#owner").innerHTML = data.owner;
+        document.querySelector("#desc").innerHTML = data.discription;
+        document.querySelector("#id").innerHTML = id;
+
+    })
+
+    async function get_nft_detail_popup(id) {
+        let tmp = await App.get_detail(id);
+        let response = await fetch(tmp.url);
+        let data = await response.json();
+        console.log(data);
+
+        return {
+            ...data, "owner": tmp.owner,
+        }
+    }
+</script>
+
+</html>

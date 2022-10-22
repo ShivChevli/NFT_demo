@@ -89,6 +89,79 @@
             top: 50%;
             /* z-index: 1; */
         }
+
+        .link-box {
+            color: #000;
+            text-decoration: none;
+            transition: 500ms;
+        }
+
+        .link-box:hover {
+            color: #000;
+            transition: 200ms;
+            transform: scale(1.02);
+        }
+
+        .link-box:hover img {
+            transition: 700ms;
+            transform: scale(1.03) translate(-50%, -50%);
+        }
+
+        .popup-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: calc(100% - 100px);
+            height: calc(100% - 100px);
+            background: rgba(0, 0, 0, .8);
+            border-radius: 10px;
+            border: 1px solid #000;
+            display: grid;
+            display: none;
+            grid-template-columns: 60% 40%;
+            grid-template-areas: repeat();
+        }
+
+        .popup-img-top {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .popup-img-top img {
+            transition: 500ms;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background: #000;
+            /* z-index: 1; */
+        }
+
+        .popup-detail-container {
+            padding: 100px 10px;
+            color: #fff;
+        }
+
+        .popup-detail-card-container {
+            margin: 10px 20px;
+        }
+
+        .popup-detail-card-container h1 {
+            margin-bottom: 10px;
+        }
+
+        .popup-detail-card-container p {
+            font-size: 1.2rem;
+        }
+
+        .place-holder {
+            background: gray;
+        }
     </style>
 </head>
 
@@ -123,7 +196,7 @@
             <div class="col-4 px-3 my-4">
                 <div class="card">
                     <div class="card-img-top">
-                        <img src="./WallPapers/pmr48zw9xsx01.jpg" class="" alt="...">
+                        <img src="" class="place-holder" alt="...">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
@@ -137,7 +210,7 @@
             <div class="col-4 px-3 my-4">
                 <div class="card">
                     <div class="card-img-top">
-                        <img src="./WallPapers/p3.jpg" class="" alt="...">
+                        <img src="" class="place-holder" alt="...">
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">Card title</h5>
@@ -156,6 +229,30 @@
 
         </div>
     </main>
+
+    <div class="popup-container">
+        <div class="popup-img-top">
+            <img src="./WallPapers/p3.jpg" class="place-holder" alt="...">
+        </div>
+        <div class="popup-detail-container">
+            <div class="popup-detail-card-container">
+                <h3>Name : </h3>
+                <p id="name"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi non quisquam praesentium
+                    provident dolores, at delectus sint maxime nemo, amet exercitationem dignissimos, ab doloribus qui
+                    deleniti aperiam itaque voluptates ullam?</p>
+            </div>
+            <div class="popup-detail-card-container">
+                <h3>NFT ID : <span id="id"> 2</span> </h3>
+                <!-- <p id="id">2</p> -->
+            </div>
+            <div class="popup-detail-card-container">
+                <h3>Name : </h3>
+                <p id="name"> Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nisi non quisquam praesentium
+                    provident dolores, at delectus sint maxime nemo, amet exercitationem dignissimos, ab doloribus qui
+                    deleniti aperiam itaque voluptates ullam?</p>
+            </div>
+        </div>
+    </div>
 
 </body>
 <!-- JavaScript Bundle with Popper -->

@@ -41,7 +41,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.log("Account Loaded");
     }
 
-
 })
 
-var tmp;
+async function get_nft_detail_popup(id) {
+    let tmp = await App.get_detail(id);
+    let response = await fetch(tmp.url);
+    let data = await response.json();
+    console.log(data);
+
+    return {
+        ...data, "owner": tmp.owner,
+    }
+}

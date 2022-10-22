@@ -33,6 +33,15 @@ App.get("/Register", (req, res) => {
     res.sendFile(path.join(__dirname, "./view/create_new_nft.html"));
 })
 
+
+App.get("/detail/:id", (req, res) => {
+    var id = req.params.id;
+    if (id == null || id == undefined) {
+        res.redirect("/");
+    }
+    res.sendFile(path.join(__dirname, "./view/detail_nft.html"));
+})
+
 App.post("/", async (req, res) => {
     let nft = req.files.nft_file;
 
